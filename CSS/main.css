@@ -1,0 +1,25 @@
+.topbartype{
+    display:flex;
+    justify-content: space-between;
+    border:1px solid red;
+    height:20px;
+}
+.topbartype>li{
+    line-height:20px;
+}
+ul,li{
+    list-style: none;
+}
+dd,dt{
+    display:inline-block;
+    margin-left:20px;
+}
+dd{
+    cursor: pointer;
+    padding:1px 4px;
+    border-radius: 4px;
+}
+dd:hover{
+    background:#fd113a;
+    color:#fff;
+}
