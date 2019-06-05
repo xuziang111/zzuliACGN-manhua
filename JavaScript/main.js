@@ -25,7 +25,13 @@
         methods:{
             startsearch:function(e){
                 console.log(e.currentTarget)
-                let temp =e.currentTarget.getAttribute('data-index')
+                let temp1 = e.currentTarget.getAttribute('data-index1')
+                let temp2 = e.currentTarget.getAttribute('data-index2')
+                for(let j = 0;j<this.list[temp1].type.length;j++){
+                    this.list[temp1].type[j].classname = ''
+                }
+                this.list[temp1].type[temp2].classname='active'
+
             }
         },
     })

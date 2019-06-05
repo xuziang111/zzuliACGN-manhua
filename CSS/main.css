@@ -23,3 +23,7 @@ dd:hover{
     background:#fd113a;
     color:#fff;
 }
+dd.active{
+    background:#fd113a;
+    color:#fff;
+}
