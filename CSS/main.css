@@ -27,3 +27,37 @@ dd.active{
     background:#fd113a;
     color:#fff;
 }
+.item-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width:100%;
+}
+.manhua-item{
+    width:167px;
+    
+}
+.manhua-item img{
+    width:100%;
+}
+.manhua-item a:hover{
+    color:rgb(255, 191, 108)
+}
+
+@media (min-width: 992px) and (max-width: 1200px){
+    body {
+        width: 1168px;
+    }
+    #tf-home{
+        width: 1168px;
+    }
+    .container {
+        width: 1168px;
+    }
+    .overlay{
+        width: 1168px;
+    }
+}
+#footer{
+    width:100%;
+}

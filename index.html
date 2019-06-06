@@ -37,7 +37,7 @@
         }
         #tf-home .overlay {
             /*网页主体高度*/
-            height:2500px;
+            /* height:2500px; */
         }
         /*居中内容块*/
         #body-container.container {
@@ -100,30 +100,8 @@
         </div>
         <div id="body-container" class="container">
             <!--在此处编辑你的HTML代码,详情了解Boostrap栅格系统-->
-            <div id='topbar'>
-                <ul class='topbartype'>
-                    <li v-for='item in type'>
-                        <a :href='item.href'>{{item.type}}</a>
-                    </li>
-                </ul>
-                <hr>
-                <ul class='text-left'>
-                    <li v-for='(item2,index1) in list'>
-                        <dl :data-index='index1'>
-                            <dt>{{item2.name}}</dt>
-                            <dd v-for='(item3,index2) in item2.type' :class='item3.classname' :data-index1='index1' :data-index2='index2' :data-param='item3.type' @click='startsearch'>{{item3.type}}</dd>
-                        </dl>
-                    </li>
-                </ul>
-            </div>
-            <main>
-                <div>
-
-                </div>
-                <div>
-                    
-                </div>
-            </main>
+            <topbar></topbar>
+            <router-view></router-view>
         </div>
     </div>
 </div>
@@ -158,6 +136,8 @@
 
 <script type="text/javascript" src="JavaScript/vendor/vue.js"></script>
 <script type="text/javascript" src="JavaScript/vendor/vue-router.js"></script>
+<script type="text/javascript" src="JavaScript/topbar.js"></script>
+<script type="text/javascript" src="JavaScript/pages.js"></script>
 <script type="text/javascript" src="JavaScript/main.js"></script>
 <!--此处追加你要增加的外部JS文件地址，end   ↑↑↑↑↑↑↑↑↑-->
 <!--*********************************************************************************************-->

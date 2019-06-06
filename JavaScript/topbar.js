@@ -1,34 +1,26 @@
-(function(){
+let topbar = Vue.component('topbar',{
+    template:`
+    <div id='topbar'>
+    <ul class='topbartype'>
+        <li v-for='item in type'>
+            <a :href='item.href'>{{item.type}}</a>
+        </li>
+    </ul>
+    <hr>
+    <ul class='text-left'>
+        <li v-for='(item2,index1) in list'>
+            <dl :data-index='index1'>
+                <dt>{{item2.name}}</dt>
+                <dd v-for='(item3,index2) in item2.type' :class='item3.classname' :data-index1='index1' :data-index2='index2' :data-param='item3.type' @click='startsearch'>{{item3.type}}</dd>
+            </dl>
+        </li>
+    </ul>
+</div>
+    `,
 
-    // 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
-
-// 1. 定义 (路由) 组件。
-// 可以从其他文件 import 进来
-const Foo = { template: '<div>foo</div>' }
-
-// 2. 定义路由
-// 每个路由应该映射一个组件。 其中"component" 可以是
-// 通过 Vue.extend() 创建的组件构造器，
-// 或者，只是一个组件配置对象。
-// 我们晚点再讨论嵌套路由。
-const routes = [
-  { path: '/comic/:page', component: comic },
-]
-
-// 3. 创建 router 实例，然后传 `routes` 配置
-// 你还可以传别的配置参数, 不过先这么简单着吧。
-const router = new VueRouter({
-  routes // (缩写) 相当于 routes: routes
-})
-
-// 4. 创建和挂载根实例。
-// 记得要通过 router 配置参数注入路由，
-// 从而让整个应用都有路由功能
-let xxx= new Vue({
-    el:'#body-container',
-    router,
-    data:{
-        type:[{type:'热血',href:'#'},
+    data:function(){
+        return {
+            type:[{type:'热血',href:'#'},
             {type:'恋爱',href:'#'},
             {type:'百合',href:'#'},
             {type:'彩虹',href:'#'},
@@ -47,6 +39,7 @@ let xxx= new Vue({
             {name:'进度',type:[{type:'全部',href:'#',classname:''},{type:'连载',href:'#',classname:''},{type:'完结',href:'#',classname:''}]},
             {name:'字母',type:[{type:'全部',href:'#',classname:''},{type:'A',href:'#',classname:''},{type:'B',href:'#',classname:''},{type:'C',href:'#',classname:''},{type:'D',href:'#',classname:''},{type:'E',href:'#',classname:''},{type:'F',href:'#',classname:''},{type:'G',href:'#',classname:''},{type:'H',href:'#',classname:''},{type:'I',href:'#',classname:''},{type:'J',href:'#',classname:''},{type:'K',href:'#',classname:''},{type:'L',href:'#',classname:''},{type:'M',href:'#',classname:''},{type:'N',href:'#',classname:''},{type:'O',href:'#',classname:''},{type:'P',href:'#',classname:''},{type:'Q',href:'#',classname:''},{type:'R',href:'#',classname:''},{type:'S',href:'#',classname:''},{type:'T',href:'#',classname:''},{type:'U',href:'#',classname:''},{type:'V',href:'#',classname:''},{type:'W',href:'#',classname:''},{type:'X',href:'#',classname:''},{type:'Y',href:'#',classname:''},{type:'Z',href:'#',classname:''}]}
         ],
+        }
     },
     methods:{
         startsearch:function(e){
@@ -60,7 +53,4 @@ let xxx= new Vue({
 
         }
     },
-
-}).$mount('#body-container')
-
-}())
+})
