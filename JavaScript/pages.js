@@ -121,10 +121,14 @@ let comic = Vue.component('comic',{
             state = temp[2]
             word = temp[3]
             num = temp[4]
+            return {
+                type,area,state,word,num
+            }
         }
     },
     mounted:function(){
         //进入组建时触发
+        console.log(this.$route.query)
         console.log(this.$route.params)
             this.$emit('loadpage',{page:'cv',part:'article',num:this.$route.params.id})
             this.creatpage(this.$route.params.page)
