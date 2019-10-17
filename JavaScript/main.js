@@ -12,7 +12,7 @@ const Foo = { template: '<div>foo</div>' }
 // 或者，只是一个组件配置对象。
 // 我们晚点再讨论嵌套路由。
 const routes = [
-  { path: '/comic/:page', component: comic },
+  { path: '/comic', component: comic },
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置
@@ -28,6 +28,7 @@ let xxx= new Vue({
     el:'#body-container',
     router,
     data:{
+        manhuadata:[{img:'/Images/1.jpg',src:'#',name:'擅长捉弄的高木同学',Ep:'第76话',score:'5'}]
         // type:[{type:'热血',href:'#'},
         //     {type:'恋爱',href:'#'},
         //     {type:'百合',href:'#'},
@@ -73,7 +74,26 @@ let xxx= new Vue({
 
         // }
         searchmanhua:function(manhua){
-
+            console.log(manhua)
+            let temp = this
+            let url='/comic?'
+            for(let i=0;i<manhua.length;i++){
+                url = url+`${manhua[i].par}=${manhua[i].val}&`
+            }
+            url=url.slice(0,url.length-1)
+            console.log(url)
+            axios.get(url)
+            .then(function (response) {
+                response = [{img:'/Images/1.jpg',src:'#',name:'擅长捉弄的高木同学',Ep:'第76话',score:'5'}]
+                temp.manhuadata = response
+                console.log(temp.manhuadata)
+            })
+            .catch(function (error) {
+                console.log(error);
+                let response = [{img:'/Images/1.jpg',src:'#',name:'擅长捉弄的高木同学',Ep:'第76话',score:'5'}]
+                temp.manhuadata = response
+                console.log(temp.manhuadata)
+            });
         }
     },
 

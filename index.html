@@ -100,8 +100,8 @@
         </div>
         <div id="body-container" class="container">
             <!--在此处编辑你的HTML代码,详情了解Boostrap栅格系统-->
-            <topbar v-on:searchmanhua="searchmanhua"></topbar>
-            <router-view></router-view>
+            <topbar @searchmanhua="searchmanhua"></topbar>
+            <router-view @searchmanhua="searchmanhua" :manhuadata = manhuadata></router-view>
         </div>
     </div>
 </div>
@@ -136,6 +136,7 @@
 
 <script type="text/javascript" src="JavaScript/vendor/vue.js"></script>
 <script type="text/javascript" src="JavaScript/vendor/vue-router.js"></script>
+<script type="text/javascript" src="JavaScript/vendor/axios.js"></script>
 <script type="text/javascript" src="JavaScript/topbar.js"></script>
 <script type="text/javascript" src="JavaScript/pages.js"></script>
 <script type="text/javascript" src="JavaScript/main.js"></script>

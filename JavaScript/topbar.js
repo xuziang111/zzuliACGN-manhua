@@ -37,34 +37,40 @@ let topbar = Vue.component('topbar',{
         ],
         list:[{par:'area',name:'地区',type:[{type:'全部',href:'#',classname:'active'},{type:'日漫',href:'#',classname:''},{type:'国漫',href:'#',classname:''},{type:'美漫',href:'#',classname:''}]},
             {par:'progress',name:'进度',type:[{type:'全部',href:'#',classname:'active'},{type:'连载',href:'#',classname:''},{type:'完结',href:'#',classname:''}]},
-            {par:'word',name:'字母',type:[{type:'热血',classname:'active'},{type:'恋爱',classname:''},
-            {type:'百合',classname:''},]}
+            {par:'word',name:'字母',type:[{type:'热血',classname:'active'},{type:'恋爱',classname:''},{type:'百合',classname:''}]}
         ],
         }
     },
     methods:{
         startsearch:function(e){
+            console.log(this.list[2].type)
             let temp1 = e.currentTarget.getAttribute('data-index1')
             let temp2 = e.currentTarget.getAttribute('data-index2')
             for(let j = 0;j<this.list[temp1].type.length;j++){
                 this.list[temp1].type[j].classname = ''
             }
             this.list[temp1].type[temp2].classname='active'
-            let temp ={}
+            let temp =[]
             for(let i=0;i<this.type.length;i++){
                 if(this.type[i].classname=='active'){
-                    temp.type = this.type[i].type
+                    temp[0]={}
+                    temp[0].par = 'type' 
+                    temp[0].val = this.type[i].type
                     break
                 }
             }
             for(let i=0;i<this.list.length;i++){
-                for(let j=0;j<this.list[i].type.length;i++){
+                for(let j=0;j<this.list[i].type.length;j++){
                     if(this.list[i].type[j].classname=='active'){
-                        temp[this.list[i].par]= this.list[i].type[j].type
+                        temp[i+1] = {}
+                        temp[i+1].par = this.list[i].par
+                        temp[i+1].val = this.list[i].type[j].type
+                        // temp[this.list[i].par]= this.list[i].type[j].type
                         break
                     }
                 }
             }
+            temp[4]={par:'page',val:1}
             console.log(temp)
             // debugger
             this.$emit('searchmanhua',temp)
