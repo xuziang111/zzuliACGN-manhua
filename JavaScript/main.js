@@ -81,6 +81,7 @@ let xxx= new Vue({
                 url = url+`${manhua[i].par}=${manhua[i].val}&`
             }
             url=url.slice(0,url.length-1)
+            this.$router.push(url)
             console.log(url)
             axios.get(url)
             .then(function (response) {

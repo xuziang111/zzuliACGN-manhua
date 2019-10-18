@@ -84,50 +84,52 @@ let comic = Vue.component('comic',{
         
     },
     methods:{
-        creatpage:function(){
-            let page = this.$route.query.page
+        creatpages:function(to){
+            console.log(to)
+            let page = to.query
             // e = e.split('-')[4]-0
-            console.log(page)
-            // if(e==1){
-            //     this.isflip={
-            //         pre:'disabled',
-            //     next:'',
-            //     prepage:'',
-            //     nextpage:'/comic/1-1-1-1-6'
-            //     }
-            //     this.isactive=['active','','','','']
-            //     this.pages=[1,2,3,4,5],
-            //     this.pagess=['/comic/1-1-1-1-1','/comic/1-1-1-1-2','/comic/1-1-1-1-3','/comic/1-1-1-1-4','/comic/1-1-1-1-5']
-            //     console.log(this.isflip)
-            // }
-            // if(e==2){
-            //     this.isflip={
-            //         pre:'',
-            //     next:'',
-            //     prepage:`/comic/1-1-1-1-${e-1}`,
-            //     nextpage:`/comic/1-1-1-1-${e+1}`
-            //     }
-            //     this.isactive=['','active','','','']
-            //     this.pages=[1,2,3,4,5],
-            //     this.pagess=['/comic/1-1-1-1-1','/comic/1-1-1-1-2','/comic/1-1-1-1-3','/comic/1-1-1-1-4','/comic/1-1-1-1-5']
-            // }
-            // if(e >= 3 ){
-            //     this.isflip={
-            //         pre:'',
-            //     next:'',
-            //     prepage:`/comic/1-1-1-1-${e-1}`,
-            //     nextpage:`/comic/1-1-1-1-${e+1}`
-            //     }
-            //     this.pages=[e-2,e-1,e,e+1,e+2]
-            //     this.isactive=['','','active','','']
-            //     this.pagess=[`/comic/1-1-1-1-${this.pages[0]}`,`/comic/1-1-1-1-${this.pages[1]}`,`/comic/1-1-1-1-${this.pages[2]}`,`/comic/1-1-1-1-${this.pages[3]}`,`/comic/1-1-1-1-${this.pages[4]}`]
-            // }
-            // console.log(e.target.getAttribute('data-page'))
-            // console.log(e.target)
+            let temp = this.creatpage(page)
+            console.log(temp)
+            let currentpage = to.query.page - 0
+            console.log(currentpage)
+            if(currentpage==1){
+                this.isflip={
+                    pre:'disabled',
+                next:'',
+                prepage:'',
+                nextpage:'${temp}2'
+                }
+                this.isactive=['active','','','','']
+                this.pages=[1,2,3,4,5],
+                this.pagess=[`${temp}1`,`${temp}2`,`${temp}3`,`${temp}4`,`${temp}5`]
+                console.log(this.isflip)
+            }
+            if(currentpage==2){
+                this.isflip={
+                    pre:'',
+                next:'',
+                prepage:`${temp}1`,
+                nextpage:`${temp}3`
+                }
+                this.isactive=['','active','','','']
+                this.pages=[1,2,3,4,5],
+                this.pagess=[`${temp}1`,`${temp}2`,`${temp}3`,`${temp}4`,`${temp}5`]
+            }
+            if(currentpage >= 3 ){
+                this.isflip={
+                    pre:'',
+                next:'',
+                prepage:`${temp}${currentpage-1}`,
+                nextpage:`${temp}${currentpage+1}`
+                }
+                this.pages=[currentpage-2,currentpage-1,currentpage,currentpage+1,currentpage+2]
+                this.isactive=['','','active','','']
+                this.pagess=[`${temp}${this.pages[0]}`,`${temp}${this.pages[1]}`,`${temp}${this.pages[2]}`,`${temp}${this.pages[3]}`,`${temp}${this.pages[4]}`]
+            }
             // this.$emit('loadpage',{page:'comic',part:'article',num:e.target.getAttribute('data-page')})
         },
         creatpage:function(page){
-            let temppage = `/comic?type=${page.type}&area=${page.area}&progress=${page.progress}&word=${page.word}&page=${page.page}`
+            let temppage = `/comic?type=${page.type}&area=${page.area}&progress=${page.progress}&word=${page.word}&page=`
             return temppage
         },
         getrouter:function(){
@@ -154,9 +156,10 @@ let comic = Vue.component('comic',{
             //     type,area,state,word,num
             // }
         },
-        jiazai:function(){
+        jiazai:function(to){
             let temp = this.getrouter()
         this.$emit('searchmanhua',temp)
+        this.creatpages(to)
         }
         
     },
@@ -166,7 +169,9 @@ let comic = Vue.component('comic',{
         },
         beforeRouteUpdate (to, from, next) {
             //每次同组件间跳转触发
-            this.jiazai()
+            console.log(to)
+            this.jiazai(to)
+            this.creatpages(to)
             next()
           },
 })
