@@ -2,8 +2,8 @@ let topbar = Vue.component('topbar',{
     template:`
     <div id='topbar'>
     <ul class='topbartype'>
-        <li v-for='item in type'>
-            <a :href='item.href'>{{item.type}}</a>
+        <li v-for='(item,index3) in type'>
+            <span @click='topbarclick' :data-index3='index3'>{{item.type}}</span>
         </li>
     </ul>
     <hr>
@@ -20,24 +20,24 @@ let topbar = Vue.component('topbar',{
 //type area progress word
     data:function(){
         return {
-            type:[{type:'热血',href:'#',classname:'active'},
-            {type:'恋爱',href:'#',classname:''},
-            {type:'百合',href:'#',classname:''},
-            {type:'彩虹',href:'#',classname:''},
-            {type:'冒险',href:'#',classname:''},
-            {type:'后宫',href:'#',classname:''},
-            {type:'悬疑',href:'#',classname:''},
-            {type:'推理',href:'#',classname:''},
-            {type:'搞笑',href:'#',classname:''},
-            {type:'奇幻',href:'#',classname:''},
-            {type:'萌系',href:'#',classname:''},
-            {type:'日常',href:'#',classname:''},
-            {type:'治愈',href:'#',classname:''},
-            {type:'穿越',href:'#',classname:''},
+            type:[{type:'热血',classname:''},
+            {type:'恋爱',classname:''},
+            {type:'百合',classname:''},
+            {type:'彩虹',classname:''},
+            {type:'冒险',classname:''},
+            {type:'后宫',classname:''},
+            {type:'悬疑',classname:''},
+            {type:'推理',classname:''},
+            {type:'搞笑',classname:''},
+            {type:'奇幻',classname:''},
+            {type:'萌系',classname:''},
+            {type:'日常',classname:''},
+            {type:'治愈',classname:''},
+            {type:'穿越',classname:''},
         ],
-        list:[{par:'area',name:'地区',type:[{type:'全部',href:'#',classname:'active'},{type:'日漫',href:'#',classname:''},{type:'国漫',href:'#',classname:''},{type:'美漫',href:'#',classname:''}]},
-            {par:'progress',name:'进度',type:[{type:'全部',href:'#',classname:'active'},{type:'连载',href:'#',classname:''},{type:'完结',href:'#',classname:''}]},
-            {par:'word',name:'字母',type:[{type:'热血',classname:'active'},{type:'恋爱',classname:''},{type:'百合',classname:''}]}
+        list:[{par:'area',name:'地区',type:[{type:'全部',classname:''},{type:'日漫',classname:''},{type:'国漫',classname:''},{type:'美漫',classname:''}]},
+            {par:'progress',name:'进度',type:[{type:'全部',classname:''},{type:'连载',classname:''},{type:'完结',classname:''}]},
+            {par:'word',name:'字母',type:[{type:'热血',classname:''},{type:'恋爱',classname:''},{type:'百合',classname:''}]}
         ],
         }
     },
@@ -46,10 +46,22 @@ let topbar = Vue.component('topbar',{
             console.log(this.list[2].type)
             let temp1 = e.currentTarget.getAttribute('data-index1')
             let temp2 = e.currentTarget.getAttribute('data-index2')
+
             for(let j = 0;j<this.list[temp1].type.length;j++){
                 this.list[temp1].type[j].classname = ''
             }
             this.list[temp1].type[temp2].classname='active'
+            this.searchmanhua()
+        },
+        topbarclick:function(e){
+            let temp3 = e.currentTarget.getAttribute('data-index3')
+            for(let j = 0;j<this.type.length;j++){
+                this.type[j].classname = ''
+            }
+            this.type[temp3].classname='active'
+            this.searchmanhua()
+        },
+        searchmanhua:function(){
             let temp =[]
             for(let i=0;i<this.type.length;i++){
                 if(this.type[i].classname=='active'){
@@ -65,7 +77,6 @@ let topbar = Vue.component('topbar',{
                         temp[i+1] = {}
                         temp[i+1].par = this.list[i].par
                         temp[i+1].val = this.list[i].type[j].type
-                        // temp[this.list[i].par]= this.list[i].type[j].type
                         break
                     }
                 }
@@ -74,6 +85,69 @@ let topbar = Vue.component('topbar',{
             console.log(temp)
             // debugger
             this.$emit('searchmanhua',temp)
+        },
+        getQueryArgs:function(){
+            var qs = (location.search.length > 0 ? location.search.substr(1) : ''),
+                //保存每一项
+                args = {},
+                //得到每一项
+                items = qs.length ? qs.split('&') : [],
+                item = null,
+                name = null,
+                value = null,
+                i = 0,
+                len = items.length;
+        
+                for(i = 0;i<len ;i++){
+                    item = items[i].split('='),
+                    name = decodeURIComponent(item[0])
+                    value = decodeURIComponent(item[1])
+                    if(name.length){
+                        args[name] = value;
+                    }
+                }
+                return args;
+        }
+    },
+    mounted:function() {
+        let query = this.getQueryArgs()
+        if(Object.keys(query).length === 0){
+            this.type[0].classname = 'active'
+            this.list[0].type[0].classname = 'active'
+            this.list[1].type[0].classname = 'active'
+            this.list[2].type[0].classname = 'active'
+        }else{
+            let chaxuncanshu = query
+            let temp={}
+            let i = 0
+            for(let key  in chaxuncanshu){
+                temp[key]=chaxuncanshu[key]
+                i++
+            }
+    
+    
+            for(let i=0;i<this.type.length;i++){
+                if(this.type[i].type===temp.type){
+                    this.type[i].classname='active'
+                    break
+                }
+            }
+    
+            console.log(temp)
+            for(let key  in temp){
+                for(let i=0;i<this.list.length;i++){
+                    if(this.list[i].par === key){
+                        for(let j=0;j<this.type.length;j++){
+                            console.log(this.list[i].type[j].type)
+                            if(this.list[i].type[j].type===temp[key]){
+                                this.list[i].type[j].classname='active'
+                                break
+                            }
+                        }
+                        break
+                    }
+                }
+            }
         }
     },
 })

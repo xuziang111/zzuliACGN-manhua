@@ -18,16 +18,16 @@ let comic = Vue.component('comic',{
     <nav aria-label="Page navigation">
     <ul class="pagination">
       <li :class='isflip.pre'>
-        <router-link :to='isflip.prepage' aria-label="Previous">
+        <span aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
-        </router-link>
+        </span>
       </li>
       
-      <li v-for="(item3,index) in pages" :class='isactive[index]'><router-link :to="pagess[index]"><span :data-page="item3">{{item3}}</span></router-link></li>
+      <li v-for="(item3,index) in pages" @click="pageclick" :class='isactive[index]'><span><span :data-page="item3">{{item3}}</span></span></li>
       <li :class='isflip.next'>
-        <router-link :to='isflip.nextpage' aria-label="Next">
+        <span aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
-        </router-link>
+        </span>
       </li>
     </ul>
     </nav>
@@ -74,8 +74,8 @@ let comic = Vue.component('comic',{
     watch:{
         manhuadata:{
             handler:function(val){
-                console.log('xxx')
                 console.log(this.manhuadata)
+                console.log(decodeURI(window.location.search))
                 this.manhuaList = this.manhuadata
             },
             // immediate: true,
@@ -84,20 +84,18 @@ let comic = Vue.component('comic',{
         
     },
     methods:{
-        creatpages:function(to){
-            console.log(to)
+        creatpages:function(){
+            let to = this.getQueryArgs()
             let page = to.query
             // e = e.split('-')[4]-0
             let temp = this.creatpage(page)
-            console.log(temp)
             let currentpage = to.query.page - 0
-            console.log(currentpage)
             if(currentpage==1){
                 this.isflip={
                     pre:'disabled',
                 next:'',
                 prepage:'',
-                nextpage:'${temp}2'
+                nextpage:`${temp}2`
                 }
                 this.isactive=['active','','','','']
                 this.pages=[1,2,3,4,5],
@@ -132,9 +130,31 @@ let comic = Vue.component('comic',{
             let temppage = `/comic?type=${page.type}&area=${page.area}&progress=${page.progress}&word=${page.word}&page=`
             return temppage
         },
+        getQueryArgs:function(){
+            var qs = (location.search.length > 0 ? location.search.substr(1) : ''),
+                //保存每一项
+                args = {},
+                //得到每一项
+                items = qs.length ? qs.split('&') : [],
+                item = null,
+                name = null,
+                value = null,
+                i = 0,
+                len = items.length;
+        
+                for(i = 0;i<len ;i++){
+                    item = items[i].split('='),
+                    name = decodeURIComponent(item[0])
+                    value = decodeURIComponent(item[1])
+                    if(name.length){
+                        args[name] = value;
+                    }
+                }
+                return args;
+        },
         getrouter:function(){
-            console.log(this.$route.query)
-            let chaxuncanshu = this.$route.query
+            console.log(this.getQueryArgs())
+            let chaxuncanshu = this.getQueryArgs()
             let temp=[]
             let i = 0
             for(let key  in chaxuncanshu){
@@ -144,34 +164,19 @@ let comic = Vue.component('comic',{
                 i++
             }
             return temp
-            // let temp = this.$route.params.page.split('-')
-            // console.log(temp)
-            // let type,area,state,word,num
-            // type = temp[0]
-            // area = temp[1]
-            // state = temp[2]
-            // word = temp[3]
-            // num = temp[4]
-            // return {
-            //     type,area,state,word,num
-            // }
         },
-        jiazai:function(to){
+        jiazai:function(){
             let temp = this.getrouter()
-        this.$emit('searchmanhua',temp)
-        this.creatpages(to)
+            this.$emit('searchmanhua',temp)
+            this.creatpages(to)
+        },
+        pageclick:function(){
+            this.creatpages()
         }
         
     },
     mounted:function(){
-        //进入组建时触发
-        // this.jiazai()
-        },
-        beforeRouteUpdate (to, from, next) {
-            //每次同组件间跳转触发
-            console.log(to)
-            this.jiazai(to)
-            this.creatpages(to)
-            next()
-          },
+
+    },
+
 })
