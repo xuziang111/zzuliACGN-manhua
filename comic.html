@@ -101,7 +101,7 @@
         <div id="body-container" class="container">
             <!--在此处编辑你的HTML代码,详情了解Boostrap栅格系统-->
             <topbar @searchmanhua="searchmanhua"></topbar>
-            <comic @searchmanhua="searchmanhua" :manhuadata = manhuadata></comic>
+            <comic @searchmanhua="searchmanhua" :manhuadata = manhuadata :querys=querys></comic>
         </div>
     </div>
 </div>
@@ -137,9 +137,9 @@
 <script type="text/javascript" src="JavaScript/vendor/vue.js"></script>
 <script type="text/javascript" src="JavaScript/vendor/vue-router.js"></script>
 <script type="text/javascript" src="JavaScript/vendor/axios.js"></script>
-<script type="text/javascript" src="JavaScript/topbar.js"></script>
-<script type="text/javascript" src="JavaScript/pages.js"></script>
-<script type="text/javascript" src="JavaScript/main.js"></script>
+<script type="text/javascript" src="JavaScript/comic/topbar.js"></script>
+<script type="text/javascript" src="JavaScript/comic/pages.js"></script>
+<script type="text/javascript" src="JavaScript/comic/main.js"></script>
 <!--此处追加你要增加的外部JS文件地址，end   ↑↑↑↑↑↑↑↑↑-->
 <!--*********************************************************************************************-->
 <!--在以下script标签中追加你的js代码，start  ↓↓↓↓↓↓↓↓↓-->

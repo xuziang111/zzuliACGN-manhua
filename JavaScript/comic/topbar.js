@@ -138,7 +138,6 @@ let topbar = Vue.component('topbar',{
                 for(let i=0;i<this.list.length;i++){
                     if(this.list[i].par === key){
                         for(let j=0;j<this.type.length;j++){
-                            console.log(this.list[i].type[j].type)
                             if(this.list[i].type[j].type===temp[key]){
                                 this.list[i].type[j].classname='active'
                                 break

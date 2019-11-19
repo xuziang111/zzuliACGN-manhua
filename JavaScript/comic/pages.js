@@ -1,5 +1,5 @@
 let comic = Vue.component('comic',{
-    props:['manhuadata'],
+    props:['manhuadata','querys'],
     template:`
     <main>
     <div>
@@ -23,7 +23,7 @@ let comic = Vue.component('comic',{
         </span>
       </li>
       
-      <li v-for="(item3,index) in pages" @click="pageclick" :class='isactive[index]'><span><span :data-page="item3">{{item3}}</span></span></li>
+      <li v-for="(item3,index) in pages" @click="pageclick($event)" :class='isactive[index]'><span :data-page="item3" :data-pages='pagess[index]'>{{item3}}</span></li>
       <li :class='isflip.next'>
         <span aria-label="Next">
           <span aria-hidden="true">&raquo;</span>
@@ -38,13 +38,13 @@ let comic = Vue.component('comic',{
             isflip:{
                 pre:'disabled',
                 next:'disabled',
-                prepage:'/comic?type=热血&area=国漫&progress=全部&word=热血&page=1',
-                nextpage:'/comic?type=热血&area=国漫&progress=全部&word=热血&page=2'
+                prepage:'?type=热血&area=国漫&progress=全部&word=热血&page=1',
+                nextpage:'?type=热血&area=国漫&progress=全部&word=热血&page=2'
             },
             isactive:['active','','','',''],
             article:[],
         pages:[1,2,3,4,5],
-        pagess:['/comic?type=热血&area=国漫&progress=全部&word=热血&page=1','/comic?type=热血&area=国漫&progress=全部&word=热血&page=2','/comic?type=热血&area=国漫&progress=全部&word=热血&page=3','/comic?type=热血&area=国漫&progress=全部&word=热血&page=4','/comic?type=热血&area=国漫&progress=全部&word=热血&page=5'],
+        pagess:['?type=热血&area=国漫&progress=全部&word=热血&page=1','?type=热血&area=国漫&progress=全部&word=热血&page=2','?type=热血&area=国漫&progress=全部&word=热血&page=3','?type=热血&area=国漫&progress=全部&word=热血&page=4','?type=热血&area=国漫&progress=全部&word=热血&page=5'],
         manhuaList:[{img:'/Images/1.jpg',src:'#',name:'擅长捉弄的高木同学',Ep:'第76话',score:'5'},
         {img:'/Images/1.jpg',src:'#',name:'擅长捉弄的高木同学',Ep:'第76话',score:'5'},
         {img:'/Images/1.jpg',src:'#',name:'擅长捉弄的高木同学',Ep:'第76话',score:'5'},
@@ -74,9 +74,15 @@ let comic = Vue.component('comic',{
     watch:{
         manhuadata:{
             handler:function(val){
-                console.log(this.manhuadata)
                 console.log(decodeURI(window.location.search))
                 this.manhuaList = this.manhuadata
+            },
+            // immediate: true,
+            deep:true,
+        },
+        querys:{
+            handler:function(val){
+                this.creatpages(val)
             },
             // immediate: true,
             deep:true,
@@ -84,12 +90,15 @@ let comic = Vue.component('comic',{
         
     },
     methods:{
-        creatpages:function(){
-            let to = this.getQueryArgs()
-            let page = to.query
+        creatpages:function(to){
+            // let to = this.getQueryArgs()
+            console.log(to)
+            // let page = to.query
             // e = e.split('-')[4]-0
-            let temp = this.creatpage(page)
-            let currentpage = to.query.page - 0
+            // console.log(to)
+            let temp = this.creatpage(to)
+            let currentpage = to.page - 0
+            console.log(currentpage)
             if(currentpage==1){
                 this.isflip={
                     pre:'disabled',
@@ -127,11 +136,16 @@ let comic = Vue.component('comic',{
             // this.$emit('loadpage',{page:'comic',part:'article',num:e.target.getAttribute('data-page')})
         },
         creatpage:function(page){
-            let temppage = `/comic?type=${page.type}&area=${page.area}&progress=${page.progress}&word=${page.word}&page=`
+            let temppage = `?type=${page.type}&area=${page.area}&progress=${page.progress}&word=${page.word}&page=`
             return temppage
         },
-        getQueryArgs:function(){
-            var qs = (location.search.length > 0 ? location.search.substr(1) : ''),
+        getQueryArgs:function(e){
+            if(!e){
+                e = location.search
+            }
+            console.log(e)
+            console.log(e.length)
+            var qs = (e.length > 0 ? e.substr(1) : ''),
                 //保存每一项
                 args = {},
                 //得到每一项
@@ -165,13 +179,20 @@ let comic = Vue.component('comic',{
             }
             return temp
         },
-        jiazai:function(){
-            let temp = this.getrouter()
-            this.$emit('searchmanhua',temp)
-            this.creatpages(to)
-        },
-        pageclick:function(){
-            this.creatpages()
+        pageclick:function(e){
+            let temp = this.getQueryArgs(e.target.getAttribute("data-pages"))
+            console.log(temp)
+            let tempquery = []
+            let i = 0
+            for(let key  in temp){
+                tempquery[i]={}
+                tempquery[i].par=key
+                tempquery[i].val=temp[key]
+                i++
+            }
+            
+            this.$emit('searchmanhua',tempquery)
+            this.creatpages(this.querys)
         }
         
     },
